@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://kit.fontawesome.com/ef06ac1c4c.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="main.js" defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+      crossorigin="anonymous"
+    ></script>
+
+    <title>UBS-Review</title>
+    <style>
+      body {
+        background-color: rgb(62, 215, 226);
+      }
+      .input-group {
+        width: 500px;
+        margin-top: 20px;
+      }
+      .input-group > button {
+        color: aqua;
+      }
+      .card-img-top {
+        height: 200px;
+      }
+      .row {
+        margin-top: 50px;
+        margin-left: 50px;
+        margin-right: 50px;
+      }
+      .title {
+        width: 100%;
+        height: 250px;
+
+        background-image: linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.5),
+            rgba(0, 0, 0, 0.5)
+          ),
+          url('https://c.wallhere.com/photos/4d/6a/Andreas_Rocha_digital_art_books_mask_bookstore_bookshelves_painting_window-1964013.jpg!d');
+        background-position: center;
+        background-size: cover;
+
+        color: aqua;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+    </style>
+    <script>
+      // 알라딘에 신간 리스트 요청 하는 코드
+      let static_json =
+        'http://www.aladin.co.kr/ttb/api/ItemList.aspx?ttbkey=ttbliujjang1711001&QueryType=ItemNewAll&MaxResults=10&start=1&SearchTarget=Book&output=js&Version=20131101';
+      $.ajax({
+        url: static_json,
+        dataType: 'jsonp',
+        jsonpCallback: 'myCallback',
+        success: function (data) {
+          let items = data['item'];
+          $('#newbook').empty();
+          items.forEach((a) => {
+            let title = a['title'];
+            let author = a['author'];
+            let id = a['itemId'];
+            let temp_html = `<a
+                                href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=${id}&start=we"
+                                class="list-group-item list-group-item-action list-group-item-light"
+                                >-${title}<br>${author}</a
+                              >`;
+            $('#newbook').append(temp_html);
+          });
+        },
+      });
+
+      $.getJSON(static_json + '?callback=?', function (data) {});
+      // 알라딘에 베스트셀러 리스트 요청하느 코드
+      let static_json2 =
+        'http://www.aladin.co.kr/ttb/api/ItemList.aspx?ttbkey=ttbliujjang1711001&QueryType=Bestseller&MaxResults=10&start=1&SearchTarget=Book&output=js&Version=20131101';
+      $.ajax({
+        url: static_json2,
+        dataType: 'jsonp',
+        jsonpCallback: 'myCallback',
+        success: function (data) {
+          let items = data['item'];
+          $('#best').empty();
+          items.forEach((a) => {
+            let title = a['title'];
+            let author = a['author'];
+            let id = a['itemId'];
+            let temp_html = `<a
+                                href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=${id}&start=we"
+                                class="list-group-item list-group-item-action list-group-item-light"
+                                >-${title}<br>${author}</a
+                              >`;
+            $('#best').append(temp_html);
+          });
+        },
+      });
+
+      $.getJSON(static_json2 + '?callback=?', function (data) {});
+    </script>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="navbar__logo">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          version="1.1"
+          width="256"
+          height="256"
+          viewBox="0 0 256 256"
+          xml:space="preserve"
+        >
+          <defs></defs>
+          <g
+            style="
+              stroke: none;
+              stroke-width: 0;
+              stroke-dasharray: none;
+              stroke-linecap: butt;
+              stroke-linejoin: miter;
+              stroke-miterlimit: 10;
+              fill: none;
+              fill-rule: nonzero;
+              opacity: 1;
+            "
+            transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)"
+          >
+            <path
+              d="M 89 30.872 h -5.723 V 16.685 c 0 -0.271 -0.11 -0.531 -0.305 -0.719 c -0.196 -0.188 -0.452 -0.294 -0.729 -0.28 c -4.328 0.149 -8.538 0.752 -12.554 1.749 V 6.489 c 0 -0.344 -0.177 -0.665 -0.469 -0.847 c -0.293 -0.184 -0.656 -0.203 -0.968 -0.053 c -8.89 4.309 -16.793 12.648 -23.51 24.775 C 34.734 21.111 22.995 16.165 9.821 15.685 c -0.279 -0.019 -0.535 0.091 -0.731 0.28 c -0.195 0.188 -0.306 0.448 -0.306 0.72 v 7.33 c -1.392 0.098 -2.803 0.225 -4.22 0.4 c -0.504 0.063 -0.882 0.493 -0.877 1.001 l 0.047 5.456 H 0 v 53.639 h 45 h 44 c 0.553 0 1 -0.447 1 -1 V 31.872 C 90 31.32 89.553 30.872 89 30.872 z M 81.277 17.728 v 49.546 c -12.104 0.599 -23.047 4.597 -32.62 11.893 c 6.014 -9.756 12.883 -16.554 20.469 -20.23 c 0.345 -0.167 0.563 -0.517 0.563 -0.899 v -38.55 C 73.393 18.533 77.278 17.932 81.277 17.728 z M 67.689 8.127 v 49.291 C 59.575 61.524 52.293 69.006 46 79.693 V 32.215 C 52.254 20.646 59.544 12.552 67.689 8.127 z M 44 32.39 v 48.732 c -0.102 -0.058 -0.206 -0.112 -0.309 -0.17 c -9.529 -8.42 -20.581 -13.019 -32.907 -13.675 V 24.922 c 0 -0.013 0.006 -0.024 0.005 -0.038 c 0 -0.007 -0.005 -0.013 -0.005 -0.02 v -7.133 C 23.312 18.424 34.48 23.352 44 32.39 z M 8.784 26.017 v 42.216 c 0 0.538 0.426 0.979 0.963 0.999 c 9.224 0.336 17.72 2.954 25.382 7.782 c -8.824 -3.185 -18.537 -4.216 -29.023 -3.063 L 5.694 26.296 C 6.732 26.179 7.763 26.091 8.784 26.017 z M 2 32.872 h 1.751 l 0.366 42.211 c 0.002 0.285 0.126 0.556 0.341 0.743 c 0.214 0.188 0.501 0.273 0.782 0.24 c 13.865 -1.716 26.332 0.461 37.135 6.444 H 2 V 32.872 z M 88 82.511 H 47.668 c 10 -8.366 21.642 -12.831 34.643 -13.278 c 0.539 -0.019 0.966 -0.46 0.966 -0.999 V 32.872 H 88 V 82.511 z"
+              style="
+                stroke: none;
+                stroke-width: 1;
+                stroke-dasharray: none;
+                stroke-linecap: butt;
+                stroke-linejoin: miter;
+                stroke-miterlimit: 10;
+                fill: rgb(0, 0, 0);
+                fill-rule: nonzero;
+                opacity: 1;
+              "
+              transform=" matrix(1 0 0 1 0 0) "
+              stroke-linecap="round"
+            />
+          </g>
+        </svg>
+        <a href="/" style="color: black; text-decoration: none">U.B.S.</a>
+      </div>
+      <ul class="navbar__menu">
+        <li>
+          <a href="/" style="color: black; text-decoration: none">Home</a>
+        </li>
+        <li>
+          <a href="" style="color: black; text-decoration: none">Review</a>
+        </li>
+        <li><a href="" style="color: black; text-decoration: none">FAQ</a></li>
+      </ul>
+      <div class="topnav">
+        <a class="active" href="#home"></a>
+
+        <input type="text" placeholder="Search.." />
+      </div>
+      <a href="#" class="navbar__toggleBtn"
+        ><i class="fa fa-bars" aria-hidden="true"></i
+      ></a>
+    </nav>
+    <div class="title">
+      <h1>나만의 서점</h1>
+      <div class="input-group mb-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="검색해주세요."
+          aria-label="Recipient's username"
+          aria-describedby="button-addon2"
+        />
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          id="button-addon2"
+        >
+          알라딘 검색
+        </button>
+      </div>
+    </div>
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">신간리스트</h5>
+
+            <div class="list-group" id="newbook">
+              <a
+                href="#"
+                class="list-group-item list-group-item-action list-group-item-light"
+                >A simple light list group item</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">베스트셀러</h5>
+
+            <div class="list-group" id="best">
+              <a
+                href="#"
+                class="list-group-item list-group-item-action list-group-item-light"
+                >A simple light list group item</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
