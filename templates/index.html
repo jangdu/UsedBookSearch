@@ -1,92 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{{ url_for('static', filename='style.css') }}" />
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
-      crossorigin="anonymous" />
-    <script
-      src="https://kit.fontawesome.com/ef06ac1c4c.js"
-      crossorigin="anonymous"></script>
-    <script src="main.js" defer></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
-      crossorigin="anonymous"
-    ></script>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}" />
 
-    <title>UBS-Review</title>
-    <style>
-      body {
-        background-color: rgb(62, 215, 226);
-      }
-      .input-group {
-        width: 500px;
-        margin-top: 20px;
-      }
-      .input-group > button {
-        color: aqua;
-      }
-      .card-img-top {
-        height: 200px;
-      }
-      .row {
-        margin-top: 50px;
-        margin-left: 50px;
-        margin-right: 50px;
-      }
-      .title {
-        width: 100%;
-        height: 250px;
 
-        background-image: linear-gradient(
-            0deg,
-            rgba(0, 0, 0, 0.5),
-            rgba(0, 0, 0, 0.5)
-          ),
-          url('https://c.wallhere.com/photos/4d/6a/Andreas_Rocha_digital_art_books_mask_bookstore_bookshelves_painting_window-1964013.jpg!d');
-        background-position: center;
-        background-size: cover;
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous" />
+  <script src="https://kit.fontawesome.com/ef06ac1c4c.js" crossorigin="anonymous"></script>
+  <script src="{{ url_for('static', filename='main.js') }}" defer></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+    crossorigin="anonymous"></script>
 
-        color: aqua;
+  <title>UBS-Review</title>
+  <style>
+    body {
 
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-      }
-    </style>
-    <script>
-      // 알라딘에 신간 리스트 요청 하는 코드
-      let static_json =
-        'http://www.aladin.co.kr/ttb/api/ItemList.aspx?ttbkey=ttbliujjang1711001&QueryType=ItemNewAll&MaxResults=10&start=1&SearchTarget=Book&output=js&Version=20131101';
+      background-color: rgb(62, 215, 226);
+    }
 
-      $.ajax({
-        url: static_json,
-        dataType: 'jsonp',
-        jsonpCallback: 'myCallback',
-        success: function (data) {
+    .input-group {
+      width: 500px;
+      margin-top: 20px;
+    }
 
-          let items = data['item'];
-          $('#newbook').empty();
-          items.forEach((a) => {
-            let title = a['title'];
-            let author = a['author'];
-            let id = a['itemId'];
+    .input-group>button {
+      color: aqua;
+    }
 
-            let temp_html = `<a
+    .card-img-top {
+      height: 200px;
+    }
+
+    .row {
+      margin-top: 50px;
+      margin-left: 50px;
+      margin-right: 50px;
+    }
+
+    .title {
+      width: 100%;
+      height: 250px;
+
+      background-image: linear-gradient(0deg,
+          rgba(0, 0, 0, 0.5),
+          rgba(0, 0, 0, 0.5)),
+        url('https://c.wallhere.com/photos/4d/6a/Andreas_Rocha_digital_art_books_mask_bookstore_bookshelves_painting_window-1964013.jpg!d');
+      background-position: center;
+      background-size: cover;
+
+      color: aqua;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+  <script>
+    // 알라딘에 신간 리스트 요청 하는 코드
+    let static_json =
+      'http://www.aladin.co.kr/ttb/api/ItemList.aspx?ttbkey=ttbliujjang1711001&QueryType=ItemNewAll&MaxResults=10&start=1&SearchTarget=Book&output=js&Version=20131101';
+
+    $.ajax({
+      url: static_json,
+      dataType: 'jsonp',
+      jsonpCallback: 'myCallback',
+      success: function (data) {
+
+        let items = data['item'];
+        $('#newbook').empty();
+        items.forEach((a) => {
+          let title = a['title'];
+          let author = a['author'];
+          let id = a['itemId'];
+
+          let temp_html = `<a
                                 href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=${id}&start=we"
                                 class="list-group-item list-group-item-action list-group-item-light"
                                 >-${title}<br>${author}</a
