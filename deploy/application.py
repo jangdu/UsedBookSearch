@@ -1,5 +1,5 @@
 from flask import Flask, render_template, jsonify, request, json
-app = Flask(__name__)
+application = app = Flask(__name__)
 import requests
 from pymongo import MongoClient
 client = MongoClient('mongodb+srv://sparta:test@cluster0.3wu806l.mongodb.net/?retryWrites=true&w=majority')
@@ -31,7 +31,6 @@ def information():
 
 
 books = []
-
 
 @app.route('/search')
 def search():
@@ -69,7 +68,7 @@ def search():
         'book_id' : book_id,
         }
         books.append(book)
-    
+        
     return jsonify({'data': books})
 
 
@@ -97,4 +96,4 @@ def get_review():
 
 
 if __name__ == '__main__':
-    app.run('0.0.0.0', port=5500, debug=True)
+    app.run()
