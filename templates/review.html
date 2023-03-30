@@ -21,6 +21,7 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <script src="{{ url_for('static', filename='new_book.js') }}"></script>
     <script src="{{ url_for('static', filename='best_seller.js') }}"></script>
+
     <script>
         $(document).ready(function () {
 
@@ -42,29 +43,29 @@
             });
         }
         function get_comment() {
-            fetch('/htry').then((res) => console.log(res))
-                
-                // then((res) => res.json()).then((data) => {
-                // let rows = data['htry']
-                // console.log(rows)
-                // $("#comment-list").empty()
-                // rows.forEach((a) => {
-                //     let name = a['title']
-                //     let comment = a['review']
+            fetch('/htry').then((res) => res.json()).then((data) => {
+                let rows = data['htry']
+                console.log(rows)
+                $("#comment-list").empty()
+                rows.forEach((a) => {
+                    let name = a['title']
+                    let comment = a['review']
 
-                //     let temp_html = `<div class="card">
-                //             <div class="card-body">
-                //                 <blockquote class="blockquote mb-0">
-                //                     <p>${comment}</p>
-                //                     <footer class="blockquote-footer">${name}</footer>
-                //                 </blockquote>
-                //             </div>
-                //         </div>`
-                //     $("#comment-list").append(temp_html)
-                // })
+                    let temp_html = `<div class="card">
+                            <div class="card-body">
+                                <blockquote class="blockquote mb-0">
+                                    <p>${comment}</p>
+                                    <footer class="blockquote-footer">${name}</footer>
+                                </blockquote>
+                            </div>
+                        </div>`
+                    $("#comment-list").append(temp_html)
+                })
 
-            // });
+            });
+
         }
+        
     </script>
     <style>
         a {
@@ -118,100 +119,116 @@
                 <div style="float:left">
                     <div><img id="best_img" src=cover_p></div>
                 </div>
-                <div style="float:right" margin="auto">
+                <div style="float:left" margin="auto">
                     <ul class="swipe-right">
-                        <div></div>
-                        <!-- <li><a href="">Best Seller </a></li>
-                        <br>
-                        <li><a href="">도서 제목:$.{title}</a></li>
-                        <br>
-                        <li><a href="">작가</a></li>
-                        <br>
-                        <li><a href="">출판일</a></li>
-                        <br>
-                        <li><a href="">줄거리</a></li>
-                        <br>
-                        <li><a href="">출판사</a></li> -->
+                        <div>
+                            <div id="bestseller_name"></div>
+                            <br>
+                            <div id="bestseller_author"></div>
+                            <br>
+                            <div id="bestseller_des"></div>
+                            <br>
+                            <button id="bestseller_link"  type="button" class="btn btn-dark">
+                                구매하기
+                            </button>
+
+                        </div>
+
                     </ul>
                 </div>
 
             </div>
             <div class="swiper-slide">
-                <div style="float:left;">
-                    <div><img id="new_img" src=cover_p></div>
-
-                    <div style="width:200px; height:150px; border:1px; float:left;">
-                        <div id="newbook"></div>
-                    </div>
+                <div style="float:left">
+                    <img id="new_img" src=cover_p>
                 </div>
 
+                <div style="float:left" margin="auto">
+                    <ul class="swipe-right">
+                        <div>
+                            <div id="newbook_name"></div>
+                            <br>
+                            <div id="newbook_author"></div>
+                            <br>
+                            <div id="newbook_des"></div>
+                            <br>
+                            <button id="newbook_link"  type="button" class="btn btn-dark">
+                                구매하기
+                            </button>
+                        </div>
+                    </ul>
+                </div>
             </div>
-            <!-- If we need pagination -->
-            <div class="swiper-pagination"></div>
 
-            <!-- If we need navigation buttons -->
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-button-next"></div>
-
-            <!-- If we need scrollbar -->
-            <div class="swiper-scrollbar"></div>
         </div>
+        <!-- If we need pagination -->
+        <div class="swiper-pagination"></div>
+
+        <!-- If we need navigation buttons -->
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+
+        <!-- If we need scrollbar
+            <div class="swiper-scrollbar"></div> -->
+    </div>
 
 
-        <div class="mypost">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="name" placeholder="url" />
-                <label for="floatingInput">도서 제목</label>
-            </div>
-            <div class="form-floating">
-                <textarea class="form-control" placeholder="Leave a comment here" id="comment"
-                    style="height: 100px"></textarea>
-                <label for="floatingTextarea2">한줄평가</label>
-            </div>
-            <button onclick="save_comment()" type="button" class="btn btn-dark">
-                댓글 남기기
-            </button>
+    <div id="bookinfo"> </div>
+
+    <div class="mypost">
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="name" placeholder="url" />
+            <label for="floatingInput">도서 제목</label>
         </div>
-        <div class="mycards" id="comment-list">
-            <div class="card">
-                <div class="card-body">
-                    <blockquote class="blockquote mb-0">
-                        <p>새로운 앨범 너무 멋져요!</p>
-                        <footer class="blockquote-footer">호빵맨</footer>
-                    </blockquote>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <blockquote class="blockquote mb-0">
-                        <p>새로운 앨범 너무 멋져요!</p>
-                        <footer class="blockquote-footer">호빵맨</footer>
-                    </blockquote>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <blockquote class="blockquote mb-0">
-                        <p>새로운 앨범 너무 멋져요!</p>
-                        <footer class="blockquote-footer">호빵맨</footer>
-                    </blockquote>
-                </div>
+        <div class="form-floating">
+            <textarea class="form-control" placeholder="Leave a comment here" id="comment"
+                style="height: 100px"></textarea>
+            <label for="floatingTextarea2">한줄평가</label>
+        </div>
+        <button onclick="save_comment()" type="button" class="btn btn-dark">
+            댓글 남기기
+        </button>
+    </div>
+    <div class="mycards" id="comment-list">
+        <div class="card">
+            <div class="card-body">
+                <blockquote class="blockquote mb-0">
+                    <p>새로운 앨범 너무 멋져요!</p>
+                    <footer class="blockquote-footer">호빵맨</footer>
+                </blockquote>
             </div>
         </div>
-        <!-- <div class="input-group mb-3">
+        <div class="card">
+            <div class="card-body">
+                <blockquote class="blockquote mb-0">
+                    <p>새로운 앨범 너무 멋져요!</p>
+                    <footer class="blockquote-footer">호빵맨</footer>
+                </blockquote>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <blockquote class="blockquote mb-0">
+                    <p>새로운 앨범 너무 멋져요!</p>
+                    <footer class="blockquote-footer">호빵맨</footer>
+                </blockquote>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="input-group mb-3">
         <div class="input-group-prepend">
             <span class="input-group-text">제목</span>
         </div>
         <input type="text" class="form-control" id="title">
-    </div>
+    </div> -->
 
-    <div class="input-group mb-3">
+    <!-- <div class="input-group mb-3">
         <div class="input-group-prepend">
             <span class="input-group-text">리뷰</span>
         </div>
         <textarea class="form-control" id="bookReview" cols="30" rows="5" placeholder="160자까지 입력할 수 있습니다."></textarea>
-    </div>
-    <div class="review">
+    </div> -->
+    <!-- <div class="review">
         <button onclick="makeReview()" type="button" class="btn btn-primary">리뷰 작성완료</button>
     </div> -->
 
