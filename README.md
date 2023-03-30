@@ -80,7 +80,7 @@
 
 
 <details>
-<summary>🐛 서버 생성 오류.</summary>
+<summary>🐛 서버 생성 오류</summary>
 <div>
 </br>
 - 상황: Amazon의 Elastic Beanstalk을 통해 서버를 구축하고 배포하고자 하였음. 그러나 여러가지 다방면으로 오류가 계속해서 발생. 하나씩 다시 작성하고 실행하며 해결.
