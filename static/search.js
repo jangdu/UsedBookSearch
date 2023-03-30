@@ -1,78 +1,78 @@
 let page = 1;
-let firstGetBool = true
-let loading = true
+let firstGetBool = true;
+let loading = true;
 const urlParams = new URL(location.href).searchParams;
 
 function handleSearchFormEnterKey(keyword) {
-    firstGetBool = true
-    $('input[name=query]').attr('value', keyword);
-    window.open('?' + 'query=' + keyword, '_self');
-    loadBooks(keyword)
-    scroll()
+  firstGetBool = true;
+  $("input[name=query]").attr("value", keyword);
+  window.open("?" + "query=" + keyword, "_self");
+  loadBooks(keyword);
+  scroll();
 }
 
-function onClickBookTitle(e){
-    location.replace(`/information?id=${e}`)
+function onClickBookTitle(e) {
+  location.replace(`/information?id=${e}`);
 }
 
-$(document).ready(function(data) {
-    event.preventDefault()
-    firstGetBool = true
-    //console.log(urlParams.get('query'))
-    
-    $('input[name=query]').attr('value', urlParams.get('query'));
-    loadBooks(urlParams.get('query'))
-    scroll()
+$(document).ready(function (data) {
+  event.preventDefault();
+  firstGetBool = true;
+  //console.log(urlParams.get('query'))
 
+  $("input[name=query]").attr("value", urlParams.get("query"));
+  loadBooks(urlParams.get("query"));
+  scroll();
 });
 
 function scroll() {
-  $(window).scroll(async function() {
-      if ($(window).scrollTop() + $(window).height() >= $(document).height() - 300) {
-        if (loading) {
-          loading = false;
-          firstGetBool = false;
-          let html = `
+  $(window).scroll(async function () {
+    if ($(window).scrollTop() + $(window).height() >= $(document).height() - 300) {
+      if (loading) {
+        loading = false;
+        firstGetBool = false;
+        let html = `
           <div class="spinner-border mb-4" role="status">
             <span class="sr-only">Loading...</span>
-          </div>`
-          $('#loading').append(html)
-          await loadBooks();
-          setTimeout(function() {
-            loading = true;
-            firstGetBool = false;
-            $('#loading').empty()
-          }, 3000); // 1초 지연시간 설정
-        }
+          </div>`;
+        $("#loading").append(html);
+        await loadBooks();
+        setTimeout(function () {
+          loading = true;
+          firstGetBool = false;
+          $("#loading").empty();
+        }, 3000); // 1초 지연시간 설정
       }
-    });
+    }
+  });
 }
-$('form').on('submit', function (event) {
-    event.preventDefault()
-    firstGetBool = true
-    loadBooks()
-    scroll()
-})
+$("form").on("submit", function (event) {
+  event.preventDefault();
+  firstGetBool = true;
+  loadBooks();
+  scroll();
+});
 
-async function loadBooks (key) {
-    if (firstGetBool) { page = 1; $('#search-result').empty();
-    }else page += 1;
-    $.ajax({
-      data: {
-        query: key === undefined ? $('input[name="query"]').val() : key,
-        'page': page
-      },
-      type: 'GET',
-      url: '/search'
-    }).done(function (data) {
-      data = data.data
-      total = data.total
-      if (data.length > 0) {
-        $.each(data, function (i, book) {
-          //var html = '<li>' + book.title + ' / ' + book.author + '</li>'
-          var image_url = book.cover_url.replace('coversum', 'cover500');
-          var html = 
-            `<div class="row cards list-wrap d-flex justify-content-center">
+async function loadBooks(key) {
+  if (firstGetBool) {
+    page = 1;
+    $("#search-result").empty();
+  } else page += 1;
+  $.ajax({
+    data: {
+      query: key === undefined ? $('input[name="query"]').val() : key,
+      page: page,
+    },
+    type: "GET",
+    url: "/search",
+  }).done(function (data) {
+    data = data.data;
+    total = data.total;
+    if (data.length > 0) {
+      $.each(data, function (i, book) {
+        //var html = '<li>' + book.title + ' / ' + book.author + '</li>'
+        var image_url = book.cover_url.replace("coversum", "cover500");
+        var html = `<div class="row cards list-wrap d-flex justify-content-center">
               <div class="col">
                 <div class="banner" style="background-image: url('${image_url}'); width:150px; height:200px; background-size : contain; background-size: 100% 100%;">
                 </div>
@@ -86,15 +86,14 @@ async function loadBooks (key) {
                   </div>
                 </div>
               </div>
-            </div>`
-          $('#search-result').append(html)
-        });
-      } else {
-        var html = firstGetBool ? '<p class="mt-4">검색 결과가 없습니다.</p>' : '<p class="mt-4">더이상 검색 결과가 없습니다.</p>'
-        $('#search-result').append(html)
-        $('#loading').empty()
-        $(window).off("scroll");
-      }
-
-  })
+            </div>`;
+        $("#search-result").append(html);
+      });
+    } else {
+      var html = firstGetBool ? '<p class="mt-4">검색 결과가 없습니다.</p>' : '<p class="mt-4">더이상 검색 결과가 없습니다.</p>';
+      $("#search-result").append(html);
+      $("#loading").empty();
+      $(window).off("scroll");
+    }
+  });
 }

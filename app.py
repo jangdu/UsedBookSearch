@@ -76,7 +76,7 @@ def search():
         pubDate = book['pubDate']
         link = book['link']
         cover_url = book['cover']
-        # book_id = book['itemId']
+        book_id = book['itemId']
         book = {
         'title' : title,
         'author' : author,
@@ -85,9 +85,11 @@ def search():
         'pubDate' : pubDate,
         'link' : link,
         'cover_url' : cover_url,
+        'book_id' : book_id,
         }
         books.append(book)
-
+    
+    # print(data)
     return jsonify({'data': books})
 
 
