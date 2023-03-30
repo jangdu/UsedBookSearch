@@ -1,227 +1,275 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>UBS-Review</title>
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
-    <script src="https://kit.fontawesome.com/ef06ac1c4c.js" crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://kit.fontawesome.com/ef06ac1c4c.js"
+      crossorigin="anonymous"
+    ></script>
     <script src="{{ url_for('static', filename='main.js') }}" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <script src="{{ url_for('static', filename='new_book.js') }}"></script>
     <script src="{{ url_for('static', filename='best_seller.js') }}"></script>
+
     <script>
-        $(document).ready(function () {
+      $(document).ready(function () {
+        get_comment();
+      });
 
-            get_comment();
-        });
+      function save_comment() {
+        let name = $('#name').val();
+        let comment = $('#comment').val();
 
-        function save_comment() {
-            let name = $('#name').val();
-            let comment = $('#comment').val();
+        let formData = new FormData();
+        formData.append('title_give', name);
+        formData.append('review_give', comment);
 
+        fetch('/htry', { method: 'POST', body: formData })
+          .then((res) => res.json())
+          .then((data) => {
+            alert(data['msg']);
+            window.location.reload();
+          });
+      }
+      function get_comment() {
+        fetch('/htry')
+          .then((res) => res.json())
+          .then((data) => {
+            let rows = data['htry'];
+            console.log(rows);
+            $('#comment-list').empty();
+            rows.forEach((a) => {
+              let name = a['title'];
+              let comment = a['review'];
 
-            let formData = new FormData();
-            formData.append("title_give", name);
-            formData.append("review_give", comment);
-
-            fetch('/htry', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
-                alert(data["msg"]);
-                window.location.reload()
+              let temp_html = `<div class="card">
+                            <div class="card-body">
+                                <blockquote class="blockquote mb-0">
+                                    <p>${comment}</p>
+                                    <footer class="blockquote-footer">${name}</footer>
+                                </blockquote>
+                            </div>
+                        </div>`;
+              $('#comment-list').append(temp_html);
             });
-        }
-        function get_comment() {
-            fetch('/htry').then((res) => console.log(res))
-                
-                // then((res) => res.json()).then((data) => {
-                // let rows = data['htry']
-                // console.log(rows)
-                // $("#comment-list").empty()
-                // rows.forEach((a) => {
-                //     let name = a['title']
-                //     let comment = a['review']
-
-                //     let temp_html = `<div class="card">
-                //             <div class="card-body">
-                //                 <blockquote class="blockquote mb-0">
-                //                     <p>${comment}</p>
-                //                     <footer class="blockquote-footer">${name}</footer>
-                //                 </blockquote>
-                //             </div>
-                //         </div>`
-                //     $("#comment-list").append(temp_html)
-                // })
-
-            // });
-        }
+          });
+      }
     </script>
     <style>
-        a {
-
-            color: black;
-            text-decoration: none;
-
-        }
+      a {
+        color: black;
+        text-decoration: none;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <nav class="navbar">
-        <div class="navbar__logo">
-            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="256"
-                height="256" viewBox="0 0 256 256" xml:space="preserve">
+      <div class="navbar__logo">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          version="1.1"
+          width="256"
+          height="256"
+          viewBox="0 0 256 256"
+          xml:space="preserve"
+        >
+          <defs></defs>
+          <g
+            style="
+              stroke: none;
+              stroke-width: 0;
+              stroke-dasharray: none;
+              stroke-linecap: butt;
+              stroke-linejoin: miter;
+              stroke-miterlimit: 10;
+              fill: none;
+              fill-rule: nonzero;
+              opacity: 1;
+            "
+            transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)"
+          >
+            <path
+              d="M 89 30.872 h -5.723 V 16.685 c 0 -0.271 -0.11 -0.531 -0.305 -0.719 c -0.196 -0.188 -0.452 -0.294 -0.729 -0.28 c -4.328 0.149 -8.538 0.752 -12.554 1.749 V 6.489 c 0 -0.344 -0.177 -0.665 -0.469 -0.847 c -0.293 -0.184 -0.656 -0.203 -0.968 -0.053 c -8.89 4.309 -16.793 12.648 -23.51 24.775 C 34.734 21.111 22.995 16.165 9.821 15.685 c -0.279 -0.019 -0.535 0.091 -0.731 0.28 c -0.195 0.188 -0.306 0.448 -0.306 0.72 v 7.33 c -1.392 0.098 -2.803 0.225 -4.22 0.4 c -0.504 0.063 -0.882 0.493 -0.877 1.001 l 0.047 5.456 H 0 v 53.639 h 45 h 44 c 0.553 0 1 -0.447 1 -1 V 31.872 C 90 31.32 89.553 30.872 89 30.872 z M 81.277 17.728 v 49.546 c -12.104 0.599 -23.047 4.597 -32.62 11.893 c 6.014 -9.756 12.883 -16.554 20.469 -20.23 c 0.345 -0.167 0.563 -0.517 0.563 -0.899 v -38.55 C 73.393 18.533 77.278 17.932 81.277 17.728 z M 67.689 8.127 v 49.291 C 59.575 61.524 52.293 69.006 46 79.693 V 32.215 C 52.254 20.646 59.544 12.552 67.689 8.127 z M 44 32.39 v 48.732 c -0.102 -0.058 -0.206 -0.112 -0.309 -0.17 c -9.529 -8.42 -20.581 -13.019 -32.907 -13.675 V 24.922 c 0 -0.013 0.006 -0.024 0.005 -0.038 c 0 -0.007 -0.005 -0.013 -0.005 -0.02 v -7.133 C 23.312 18.424 34.48 23.352 44 32.39 z M 8.784 26.017 v 42.216 c 0 0.538 0.426 0.979 0.963 0.999 c 9.224 0.336 17.72 2.954 25.382 7.782 c -8.824 -3.185 -18.537 -4.216 -29.023 -3.063 L 5.694 26.296 C 6.732 26.179 7.763 26.091 8.784 26.017 z M 2 32.872 h 1.751 l 0.366 42.211 c 0.002 0.285 0.126 0.556 0.341 0.743 c 0.214 0.188 0.501 0.273 0.782 0.24 c 13.865 -1.716 26.332 0.461 37.135 6.444 H 2 V 32.872 z M 88 82.511 H 47.668 c 10 -8.366 21.642 -12.831 34.643 -13.278 c 0.539 -0.019 0.966 -0.46 0.966 -0.999 V 32.872 H 88 V 82.511 z"
+              style="
+                stroke: none;
+                stroke-width: 1;
+                stroke-dasharray: none;
+                stroke-linecap: butt;
+                stroke-linejoin: miter;
+                stroke-miterlimit: 10;
+                fill: rgb(0, 0, 0);
+                fill-rule: nonzero;
+                opacity: 1;
+              "
+              transform=" matrix(1 0 0 1 0 0) "
+              stroke-linecap="round"
+            />
+          </g>
+        </svg>
+        <a href="\index">U.B.S.</a>
+      </div>
+      <ul class="navbar__menu">
+        <li><a href="\index">Home</a></li>
+        <li><a href="\review">Review</a></li>
+        <li><a href="">FAQ</a></li>
+      </ul>
+      <div class="topnav">
+        <a class="active" href="#home"></a>
 
-                <defs>
-                </defs>
-                <g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;"
-                    transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
-                    <path
-                        d="M 89 30.872 h -5.723 V 16.685 c 0 -0.271 -0.11 -0.531 -0.305 -0.719 c -0.196 -0.188 -0.452 -0.294 -0.729 -0.28 c -4.328 0.149 -8.538 0.752 -12.554 1.749 V 6.489 c 0 -0.344 -0.177 -0.665 -0.469 -0.847 c -0.293 -0.184 -0.656 -0.203 -0.968 -0.053 c -8.89 4.309 -16.793 12.648 -23.51 24.775 C 34.734 21.111 22.995 16.165 9.821 15.685 c -0.279 -0.019 -0.535 0.091 -0.731 0.28 c -0.195 0.188 -0.306 0.448 -0.306 0.72 v 7.33 c -1.392 0.098 -2.803 0.225 -4.22 0.4 c -0.504 0.063 -0.882 0.493 -0.877 1.001 l 0.047 5.456 H 0 v 53.639 h 45 h 44 c 0.553 0 1 -0.447 1 -1 V 31.872 C 90 31.32 89.553 30.872 89 30.872 z M 81.277 17.728 v 49.546 c -12.104 0.599 -23.047 4.597 -32.62 11.893 c 6.014 -9.756 12.883 -16.554 20.469 -20.23 c 0.345 -0.167 0.563 -0.517 0.563 -0.899 v -38.55 C 73.393 18.533 77.278 17.932 81.277 17.728 z M 67.689 8.127 v 49.291 C 59.575 61.524 52.293 69.006 46 79.693 V 32.215 C 52.254 20.646 59.544 12.552 67.689 8.127 z M 44 32.39 v 48.732 c -0.102 -0.058 -0.206 -0.112 -0.309 -0.17 c -9.529 -8.42 -20.581 -13.019 -32.907 -13.675 V 24.922 c 0 -0.013 0.006 -0.024 0.005 -0.038 c 0 -0.007 -0.005 -0.013 -0.005 -0.02 v -7.133 C 23.312 18.424 34.48 23.352 44 32.39 z M 8.784 26.017 v 42.216 c 0 0.538 0.426 0.979 0.963 0.999 c 9.224 0.336 17.72 2.954 25.382 7.782 c -8.824 -3.185 -18.537 -4.216 -29.023 -3.063 L 5.694 26.296 C 6.732 26.179 7.763 26.091 8.784 26.017 z M 2 32.872 h 1.751 l 0.366 42.211 c 0.002 0.285 0.126 0.556 0.341 0.743 c 0.214 0.188 0.501 0.273 0.782 0.24 c 13.865 -1.716 26.332 0.461 37.135 6.444 H 2 V 32.872 z M 88 82.511 H 47.668 c 10 -8.366 21.642 -12.831 34.643 -13.278 c 0.539 -0.019 0.966 -0.46 0.966 -0.999 V 32.872 H 88 V 82.511 z"
-                        style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"
-                        transform=" matrix(1 0 0 1 0 0) " stroke-linecap="round" />
-                </g>
-            </svg>
-            <a href="\index">U.B.S.</a>
-
-        </div>
-        <ul class="navbar__menu">
-            <li><a href="\index">Home</a></li>
-            <li><a href="\review">Review</a></li>
-            <li><a href="">FAQ</a></li>
-
-        </ul>
-        <div class="topnav">
-            <a class="active" href="#home"></a>
-
-            <input type="text" placeholder="Search..">
-        </div>
-        <a href="#" class="navbar__toggleBtn"><i class="fa fa-bars" aria-hidden="true"></i></a>
+        <input type="text" placeholder="Search.." />
+      </div>
+      <a href="#" class="navbar__toggleBtn"
+        ><i class="fa fa-bars" aria-hidden="true"></i
+      ></a>
     </nav>
 
     <!-- Slider main container -->
     <div class="swiper">
-        <!-- Additional required wrapper -->
-        <div class="swiper-wrapper">
-            <!-- Slides -->
-            <div class="swiper-slide">
-                <div style="float:left">
-                    <div><img id="best_img" src=cover_p></div>
-                </div>
-                <div style="float:right" margin="auto">
-                    <ul class="swipe-right">
-                        <div></div>
-                        <!-- <li><a href="">Best Seller </a></li>
-                        <br>
-                        <li><a href="">도서 제목:$.{title}</a></li>
-                        <br>
-                        <li><a href="">작가</a></li>
-                        <br>
-                        <li><a href="">출판일</a></li>
-                        <br>
-                        <li><a href="">줄거리</a></li>
-                        <br>
-                        <li><a href="">출판사</a></li> -->
-                    </ul>
-                </div>
-
-            </div>
-            <div class="swiper-slide">
-                <div style="float:left;">
-                    <div><img id="new_img" src=cover_p></div>
-
-                    <div style="width:200px; height:150px; border:1px; float:left;">
-                        <div id="newbook"></div>
-                    </div>
-                </div>
-
-            </div>
-            <!-- If we need pagination -->
-            <div class="swiper-pagination"></div>
-
-            <!-- If we need navigation buttons -->
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-button-next"></div>
-
-            <!-- If we need scrollbar -->
-            <div class="swiper-scrollbar"></div>
+      <!-- Additional required wrapper -->
+      <div class="swiper-wrapper">
+        <!-- Slides -->
+        <div class="swiper-slide">
+          <div style="float: left">
+            <div><img id="best_img" src="cover_p" /></div>
+          </div>
+          <div style="float: left" margin="auto">
+            <ul class="swipe-right">
+              <div>
+                <div id="bestseller_name"></div>
+                <br />
+                <div id="bestseller_author"></div>
+                <br />
+                <div id="bestseller_des"></div>
+                <br />
+                <button id="bestseller_link" type="button" class="btn btn-dark">
+                  정보보기
+                </button>
+              </div>
+            </ul>
+          </div>
         </div>
+        <div class="swiper-slide">
+          <div style="float: left">
+            <img id="new_img" src="cover_p" />
+          </div>
 
+          <div style="float: left" margin="auto">
+            <ul class="swipe-right">
+              <div>
+                <div id="newbook_name"></div>
+                <br />
+                <div id="newbook_author"></div>
+                <br />
+                <div id="newbook_des"></div>
+                <br />
+                <button id="newbook_link" type="button" class="btn btn-dark">
+                  정보보기
+                </button>
+              </div>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <!-- If we need pagination -->
+      <div class="swiper-pagination"></div>
 
-        <div class="mypost">
-            <div class="form-floating mb-3">
-                <input type="text" class="form-control" id="name" placeholder="url" />
-                <label for="floatingInput">도서 제목</label>
-            </div>
-            <div class="form-floating">
-                <textarea class="form-control" placeholder="Leave a comment here" id="comment"
-                    style="height: 100px"></textarea>
-                <label for="floatingTextarea2">한줄평가</label>
-            </div>
-            <button onclick="save_comment()" type="button" class="btn btn-dark">
-                댓글 남기기
-            </button>
+      <!-- If we need navigation buttons -->
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+
+      <!-- If we need scrollbar
+            <div class="swiper-scrollbar"></div> -->
+    </div>
+
+    <div id="bookinfo"></div>
+
+    <div class="mypost">
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" id="name" placeholder="url" />
+        <label for="floatingInput">도서 제목</label>
+      </div>
+      <div class="form-floating">
+        <textarea
+          class="form-control"
+          placeholder="Leave a comment here"
+          id="comment"
+          style="height: 100px"
+        ></textarea>
+        <label for="floatingTextarea2">한줄평가</label>
+      </div>
+      <button onclick="save_comment()" type="button" class="btn btn-dark">
+        댓글 남기기
+      </button>
+    </div>
+    <div class="mycards" id="comment-list">
+      <div class="card">
+        <div class="card-body">
+          <blockquote class="blockquote mb-0">
+            <p>새로운 앨범 너무 멋져요!</p>
+            <footer class="blockquote-footer">호빵맨</footer>
+          </blockquote>
         </div>
-        <div class="mycards" id="comment-list">
-            <div class="card">
-                <div class="card-body">
-                    <blockquote class="blockquote mb-0">
-                        <p>새로운 앨범 너무 멋져요!</p>
-                        <footer class="blockquote-footer">호빵맨</footer>
-                    </blockquote>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <blockquote class="blockquote mb-0">
-                        <p>새로운 앨범 너무 멋져요!</p>
-                        <footer class="blockquote-footer">호빵맨</footer>
-                    </blockquote>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <blockquote class="blockquote mb-0">
-                        <p>새로운 앨범 너무 멋져요!</p>
-                        <footer class="blockquote-footer">호빵맨</footer>
-                    </blockquote>
-                </div>
-            </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <blockquote class="blockquote mb-0">
+            <p>새로운 앨범 너무 멋져요!</p>
+            <footer class="blockquote-footer">호빵맨</footer>
+          </blockquote>
         </div>
-        <!-- <div class="input-group mb-3">
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <blockquote class="blockquote mb-0">
+            <p>새로운 앨범 너무 멋져요!</p>
+            <footer class="blockquote-footer">호빵맨</footer>
+          </blockquote>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="input-group mb-3">
         <div class="input-group-prepend">
             <span class="input-group-text">제목</span>
         </div>
         <input type="text" class="form-control" id="title">
-    </div>
+    </div> -->
 
-    <div class="input-group mb-3">
+    <!-- <div class="input-group mb-3">
         <div class="input-group-prepend">
             <span class="input-group-text">리뷰</span>
         </div>
         <textarea class="form-control" id="bookReview" cols="30" rows="5" placeholder="160자까지 입력할 수 있습니다."></textarea>
-    </div>
-    <div class="review">
+    </div> -->
+    <!-- <div class="review">
         <button onclick="makeReview()" type="button" class="btn btn-primary">리뷰 작성완료</button>
     </div> -->
-
-
-</body>
-
-</html>
-
-
-
-</body>
-
+  </body>
 </html>
