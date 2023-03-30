@@ -164,10 +164,10 @@
       }
     </style>
     <script>
-
-      
-      let static_json =
-        "https://www.aladin.co.kr/ttb/api/ItemLookUp.aspx?ttbkey=ttbjjd03241934001&itemIdType=ISBN&ItemId=8958285346&output=js&Version=20131101&OptResult=ebookList,usedList,reviewList";
+      const urlParams = new URL(location.href).searchParams;
+      var book_id = urlParams.get("id");
+      console.log(book_id);
+      let static_json = `https://www.aladin.co.kr/ttb/api/ItemLookUp.aspx?ttbkey=ttbjjd03241934001&itemIdType=ItemId&ItemId=${book_id}&output=js&Version=20131101&OptResult=ebookList,usedList,reviewList`;
 
       $.ajax({
         url: static_json,
@@ -175,19 +175,19 @@
         jsonpCallback: "myCallback",
         success: function (data) {
           let items = data["item"];
+          console.log(items);
           $("#bookinfo").empty();
           items.forEach((a) => {
             let title = a["title"];
-            let id = a["ItemId"];
             let author = a["author"];
             let publisher = a["publisher"];
             let pubDate = a["pubDate"];
             let cover = a["cover"].replace("sum", "500");
             let priceStandard = a["priceStandard"];
             let priceSales = a["priceSales"];
-            let ebookpriceSales = a["subInfo"]["ebookList"][0]["priceSales"];
+            let ebookpriceSales = a["subInfo"]["ebookList"][0] == undefined ? "ebook없음" : a["subInfo"]["ebookList"][0]["priceSales"];
             let itemPage = a["subInfo"]["itemPage"];
-            let isbn13 = a["isbn13"];
+            let isbn = a["isbn"];
             let categoryName = a["categoryName"];
             let description = a["description"];
             let link = a["link"];
@@ -221,9 +221,9 @@
                   <br />
                   <span>발행일 : ${pubDate}</span>
                   <br />
-                  <span>쪽 : ${itemPage}쪽</span>                  
+                  <span>쪽 : ${itemPage}쪽</span>
                   <br />
-                  <span>isbn : ${isbn13}</span>
+                  <span>isbn : ${isbn}</span>
                   <br />
                   <span>분류 : ${categoryName}</span>
 
@@ -239,7 +239,7 @@
                 <br />
                   <hr />
                 </div>
-                
+
                 <div class="block">
                     <p>
                       <a href="${link}"><strong>알라딘으로 이동</strong></a>
@@ -250,8 +250,6 @@
           });
         },
       });
-
-      //$.getJSON(url + "?callback=?", function (data) {});//
     </script>
   </head>
   <body>
@@ -299,70 +297,20 @@
             />
           </g>
         </svg>
+
         <a href="\index">U.B.S.</a>
       </div>
       <ul class="navbar__menu">
         <li><a href="\index">Home</a></li>
         <li><a href="\review">Review</a></li>
+
         <li><a href="">FAQ</a></li>
       </ul>
       <div class="topnav">
         <a class="active" href="#home"></a>
-
-        <input type="text" placeholder="Search.." />
       </div>
       <a href="#" class="navbar__toggleBtn"><i class="fa fa-bars" aria-hidden="true"></i></a>
     </nav>
-    <article id="bookinfo">
-      <div class="block" style="height: 100px">
-        <div style="margin: 10px 0 0 0">
-          <span>제목</span>
-          <br />
-          <br />
-          <span>저자, 출판사, 출판일자 등을 출력하는 공간</span>
-        </div>
-      </div>
-      <div class="block">
-        <div class="bookphotobox">
-          <div class="bookphoto"></div>
-        </div>
-      </div>
-      <div class="block">
-        <hr />
-        <span>정가</span>
-        <br />
-        <span>판매가</span>
-        <br />
-        <span>전자책</span>
-        <br />
-        <span>기본 정보(200쪽 크기 무게)</span>
-        <br />
-        <span>분류</span>
-        <hr />
-      </div>
-      <div class="block">
-        <p>
-          <strong>문단으로 된 책소개</strong><br />여기는 책소개 공간. 여기는 책소개 공간. 여기는 책소개 공간. 여기는 책소개 공간. 여기는 책소개 공간. 여기는
-          책소개 공간. 여기는 책소개 공간.
-        </p>
-        <hr />
-      </div>
-      <div class="block">
-        <p><strong>목차</strong></p>
-        <hr />
-      </div>
-      <div class="block">
-        <p><strong>책 속에서</strong></p>
-        <hr />
-      </div>
-      <div class="block">
-        <p><strong>저자 및 역자소개</strong></p>
-        <hr />
-      </div>
-      <div class="block">
-        <p><strong>출판사 소개</strong></p>
-        <hr />
-      </div>
-    </article>
+    <article id="bookinfo"></article>
   </body>
 </html>
