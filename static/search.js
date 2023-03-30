@@ -18,7 +18,6 @@ function onClickBookTitle(e) {
 $(document).ready(function (data) {
   event.preventDefault();
   firstGetBool = true;
-  //console.log(urlParams.get('query'))
 
   $("input[name=query]").attr("value", urlParams.get("query"));
   loadBooks(urlParams.get("query"));
@@ -48,17 +47,17 @@ function scroll() {
 }
 $("form").on("submit", function (event) {
   event.preventDefault();
-  if ($('input[name="query"]').val()==''){
+  if ($('input[name="query"]').val() == "") {
     const html = `
     <div class="alert alert-warning alert-dismissible fade show" role="alert">
       <strong>검색어를 입력해주세요!</strong>
     </div>
-    `
+    `;
     $("#none_key").append(html);
     setTimeout(() => {
       $("#none_key").empty();
     }, 3000);
-  }else{
+  } else {
     firstGetBool = true;
     loadBooks();
     scroll();
@@ -82,7 +81,6 @@ async function loadBooks(key) {
     total = data.total;
     if (data.length > 0) {
       $.each(data, function (i, book) {
-        //var html = '<li>' + book.title + ' / ' + book.author + '</li>'
         var image_url = book.cover_url.replace("coversum", "cover500");
         var html = `<div class="row cards list-wrap d-flex justify-content-center">
               <div class="col">
