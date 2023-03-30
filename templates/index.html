@@ -94,10 +94,10 @@
           items.forEach((a) => {
             let title = a['title'];
             let author = a['author'];
-            let id = a['itemId'];
+            let _id = a['itemId'];
 
             let temp_html = `<a
-                                href="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=${id}&start=we"
+                                href="/information?id=${_id}"
                                 class="list-group-item list-group-item-action list-group-item-light"
                                 >-${title}<br>${author}</a
                               >`;
