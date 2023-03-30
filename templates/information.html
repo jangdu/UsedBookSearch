@@ -2,10 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, shrink-to-fit=no"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
@@ -20,10 +17,7 @@
       crossorigin="anonymous"
     ></script>
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap" rel="stylesheet" />
     <title>UBS-info</title>
     <style>
       .navbar {
@@ -74,7 +68,7 @@
       }
 
       /* Style the search box inside the navigation bar */
-      .topnav input[type='text'] {
+      .topnav input[type="text"] {
         float: right;
         padding: 6px;
         border: none;
@@ -171,37 +165,34 @@
     </style>
     <script>
       const urlParams = new URL(location.href).searchParams;
-      var book_id = urlParams.get('id');
+      var book_id = urlParams.get("id");
       console.log(book_id);
       let static_json = `https://www.aladin.co.kr/ttb/api/ItemLookUp.aspx?ttbkey=ttbjjd03241934001&itemIdType=ItemId&ItemId=${book_id}&output=js&Version=20131101&OptResult=ebookList,usedList,reviewList`;
 
       $.ajax({
         url: static_json,
-        dataType: 'jsonp',
-        jsonpCallback: 'myCallback',
+        dataType: "jsonp",
+        jsonpCallback: "myCallback",
         success: function (data) {
-          let items = data['item'];
+          let items = data["item"];
           console.log(items);
-          $('#bookinfo').empty();
+          $("#bookinfo").empty();
           items.forEach((a) => {
-            let title = a['title'];
-            let author = a['author'];
-            let publisher = a['publisher'];
-            let pubDate = a['pubDate'];
-            let cover = a['cover'].replace('sum', '500');
-            let priceStandard = a['priceStandard'];
-            let priceSales = a['priceSales'];
-            let ebookpriceSales =
-              a['subInfo']['ebookList'][0] == undefined
-                ? 'ebook없음'
-                : a['subInfo']['ebookList'][0]['priceSales'];
-            let itemPage = a['subInfo']['itemPage'];
-            let isbn = a['isbn'];
-            let categoryName = a['categoryName'];
-            let description = a['description'];
-            let link = a['link'];
-            let bestSellerRank = a['bestSellerRank'];
-            let ratingInfo = a['ratingInfo'];
+            let title = a["title"];
+            let author = a["author"];
+            let publisher = a["publisher"];
+            let pubDate = a["pubDate"];
+            let cover = a["cover"].replace("sum", "500");
+            let priceStandard = a["priceStandard"];
+            let priceSales = a["priceSales"];
+            let ebookpriceSales = a["subInfo"]["ebookList"][0] == undefined ? "ebook없음" : a["subInfo"]["ebookList"][0]["priceSales"];
+            let itemPage = a["subInfo"]["itemPage"];
+            let isbn = a["isbn"];
+            let categoryName = a["categoryName"];
+            let description = a["description"];
+            let link = a["link"];
+            let bestSellerRank = a["bestSellerRank"];
+            let ratingInfo = a["ratingInfo"];
             let temp_html = `
             <article id="bookinfo">
                 <div class="block" style="height: 100px">
@@ -255,7 +246,7 @@
                     </p>
                   </div>
             </article>`;
-            $('#bookinfo').append(temp_html);
+            $("#bookinfo").append(temp_html);
           });
         },
       });
@@ -318,9 +309,7 @@
       <div class="topnav">
         <a class="active" href="#home"></a>
       </div>
-      <a href="#" class="navbar__toggleBtn"
-        ><i class="fa fa-bars" aria-hidden="true"></i
-      ></a>
+      <a href="#" class="navbar__toggleBtn"><i class="fa fa-bars" aria-hidden="true"></i></a>
     </nav>
     <article id="bookinfo"></article>
   </body>

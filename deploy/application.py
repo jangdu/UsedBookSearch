@@ -4,9 +4,6 @@ import requests
 from pymongo import MongoClient
 client = MongoClient('mongodb+srv://sparta:test@cluster0.3wu806l.mongodb.net/?retryWrites=true&w=majority')
 db = client.dbsprata
-# import certifi
-
-# ca = certifi.where()
 
 ## HTML을 주는 부분
 @app.route('/')
@@ -35,21 +32,6 @@ def information():
 
 books = []
 
-# def search_book(keyword, page):
-#     url = 'https://www.aladin.co.kr/ttb/api/ItemSearch.aspx'
-#     params = {
-#         'ttbkey': 'ttbjjd03241934001',
-#         'Query': keyword,
-#         'start': (page-1) * 10 + 1,
-#         'SearchTarget':'Book',
-#         'maxResults': 10,
-#         'output': 'js',
-#         'Version': '20131101'
-#     }
-#     res = requests.get(url, params=params)
-#     result = res.json()
-#     return result['item'], result['totalCount']
-
 @app.route('/search')
 def search():
     query = request.args.get('query')
@@ -61,14 +43,12 @@ def search():
     book_id = ''
     url = f'http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey={api_key}&Query={query}&MaxResults=10&SearchTarget=Book&start={(page)}&output=js&Version=20131101'
 
-    # detail_url = f'http://www.aladin.co.kr/ttb/api/ItemLookUp.aspx?ttbkey={api_key}&itemIdType=ISBN&ItemId={book_id}&output=xml&Version=20131101&OptResult=ebookList,usedList,reviewList'
     response = requests.get(url)
   
 
     data = json.loads(response.text)
     books.clear()
     for book in data['item']:
-        #print(book['title'], book['author'], book['publisher'], book['priceStandard'])
         title = book['title']
         author = book['author']
         publisher = book['publisher']
@@ -88,8 +68,7 @@ def search():
         'book_id' : book_id,
         }
         books.append(book)
-    
-    # print(data)
+        
     return jsonify({'data': books})
 
 
