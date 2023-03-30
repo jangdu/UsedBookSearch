@@ -48,9 +48,21 @@ function scroll() {
 }
 $("form").on("submit", function (event) {
   event.preventDefault();
-  firstGetBool = true;
-  loadBooks();
-  scroll();
+  if ($('input[name="query"]').val()==''){
+    const html = `
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>검색어를 입력해주세요!</strong>
+    </div>
+    `
+    $("#none_key").append(html);
+    setTimeout(() => {
+      $("#none_key").empty();
+    }, 3000);
+  }else{
+    firstGetBool = true;
+    loadBooks();
+    scroll();
+  }
 });
 
 async function loadBooks(key) {
@@ -80,7 +92,7 @@ async function loadBooks(key) {
               <div id="search-result" class="bg-transparent col-6" style="width: 600px; margin: 10px;">
                 <div class="card bg-transparent">
                   <h3 class="card-header book_title" onClick='onClickBookTitle(${book.book_id})'>${book.title}</h3>
-                  <div class="card-body bg-transparent">
+                  <div class="card-body book_detail">
                     <p class="card-text">${book.author}</p>
                     <p class="card-text">가격 : ${book.price}</p>
                   </div>
