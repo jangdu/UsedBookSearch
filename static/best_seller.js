@@ -10,8 +10,7 @@ $.ajax({
     success: function (data) {
         let items = data['item'][0];
         let cover_p = items['cover'].replace('sum', '500');
-        let b_link = "https://www.aladin.co.kr/shop/wproduct.aspx?ItemId="+items['itemId'];
-        console.log(b_link);
+        let b_link =`/information?id=`+items['itemId'];
         document.getElementById("best_img").src = cover_p;
         document.getElementById("bestseller_name").innerHTML =  items['title'];
         document.getElementById("bestseller_author").innerHTML = items['author'].replace('(지은이)', '');

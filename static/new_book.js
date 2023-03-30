@@ -10,9 +10,8 @@ $.ajax({
     success: function (data) {
         let items = data['item'][0];
         let cover_p = items['cover'].replace('sum', '500');
-         let b_link ="https://www.aladin.co.kr/shop/wproduct.aspx?ItemId="+items['itemId'];
-       
-        
+        let b_link =`/information?id=`+items['itemId'];
+
         document.getElementById("new_img").src = cover_p;
         
         document.getElementById("newbook_name").innerHTML = items['title'];
